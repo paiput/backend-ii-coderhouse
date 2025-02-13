@@ -43,8 +43,7 @@ export const login = async (req, res, next) => {
     if (!user || !isPasswordValid) {
       return res.status(401).json({ error: 'Email o contraseña inválidos' })
     }
-    delete user.password
-    const token = generateToken(user)
+    const token = generateToken(JSON.stringify(user))
     res.cookie('token', token, {
       maxAge: 1000 * 60 * 10,
       httpOnly: true,
