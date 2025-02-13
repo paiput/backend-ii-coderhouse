@@ -1,5 +1,6 @@
 import { User } from '../models/userModel.js'
 import bcrypt from 'bcrypt'
+import config from '../config/variables.js'
 import { extractUserBasicData } from '../helpers/user.helpers.js'
 import { generateToken } from '../helpers/auth.helpers.js'
 
@@ -16,7 +17,10 @@ export const register = async (req, res, next) => {
     if (user) {
       return res.status(400).json({ error: 'El usuario ya existe' })
     }
-    const hashedPassword = bcrypt.hashSync(body.password, 10)
+    const hashedPassword = bcrypt.hashSync(
+      body.password,
+      config.BCRYPT_SALT_ROUNDS
+    )
     const userToCreate = { ...body, password: hashedPassword }
     const newUser = await User.create(userToCreate)
     delete newUser.password

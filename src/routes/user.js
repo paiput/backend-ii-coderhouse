@@ -21,6 +21,8 @@ userRouter.put('/:id', userController.editUser)
 
 userRouter.patch('/:id', userController.patchUser)
 
+userRouter.patch('/:id/password', userController.updatePassword)
+
 userRouter.delete('/:id', userController.deleteUserById)
 
 export default userRouter

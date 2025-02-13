@@ -5,5 +5,6 @@ export default {
       : process.env.MONGODB_URI,
   COOKIE_SECRET: process.env.COOKIE_SECRET,
   PASSPORT_SECRET: process.env.PASSPORT_SECRET,
+  BCRYPT_SALT_ROUNDS: 10,
   PORT: 3000,
 }
