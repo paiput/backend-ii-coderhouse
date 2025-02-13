@@ -6,8 +6,7 @@ const sessionRouter = Router()
 
 sessionRouter.get('/current', (req, res) => {
   try {
-    const authorizationHeader = req?.headers?.authorization?.split(' ')
-    const token = authorizationHeader[1]
+    const token = req.cookies?.token || req.headers.authorization.split(' ')[1]
     const verifiedToken = jwt.verify(token, config.PASSPORT_SECRET)
     res.status(200).json(verifiedToken)
   } catch (error) {

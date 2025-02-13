@@ -1,16 +1,15 @@
 import { User } from '../models/userModel.js'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import config from '../config/variables.js'
-import { extractUserBasicData } from '../controllers/user.controllers.js'
+import { extractUserBasicData } from '../helpers/user.helpers.js'
+import { generateToken } from '../helpers/auth.helpers.js'
 
 /**
- *
- * @param {*} req
- * @param {*} res
- * @returns
+ * Creates new user in the db and returns it
+ * @param {Request} req
+ * @param {Response} res
+ * @returns User object
  */
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { body } = req
     const user = await User.findOne({ email: body.email })
@@ -26,17 +25,17 @@ export const register = async (req, res) => {
     }
     return res.status(201).json(newUser)
   } catch (error) {
-    console.log('Error:', error)
+    next(error)
   }
 }
 
 /**
- *
- * @param {*} req
- * @param {*} res
- * @returns
+ * Logs in the user
+ * @param {Request} req
+ * @param {Response} res
+ * @returns User object with its token
  */
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { body } = req
     const user = await User.findOne({ email: body.email })
@@ -45,16 +44,13 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: 'Email o contraseña inválidos' })
     }
     delete user.password
-    const token = jwt.sign({ user }, config.PASSPORT_SECRET, {
-      expiresIn: '10m',
-    })
+    const token = generateToken(user)
     res.cookie('token', token, {
       maxAge: 1000 * 60 * 10,
       httpOnly: true,
     })
     return res.status(200).json({ user: extractUserBasicData(user), token })
   } catch (error) {
-    console.log({ error })
-    return res.status(500).json({ error: 'Hubo un error de servidor' })
+    next(error)
   }
 }

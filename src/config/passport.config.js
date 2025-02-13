@@ -3,28 +3,21 @@ import jwt from 'passport-jwt'
 import config from './variables.js'
 
 const JwtStrategy = jwt.Strategy
-const ExtractJwt = jwt.ExtractJwt
 
-// Ver si se gestiona el token por cookie o se hace que se mande en cada request en el header
-// const cookieExtractor = (req) => {
-//   var token = null
-//   if (req && req.cookies) {
-//     token = req.cookies['token']
-//   }
-//   return token
-// }
-
-const extractJwtTokenFromHeader = (req) => {
-  let token = null
-  const authorizationHeader = req?.headers?.authorization?.split(' ')
-  if (req && authorizationHeader && authorizationHeader[0] === 'Bearer') {
-    token = authorizationHeader[1]
+const extractJwtTokenFromCookie = (req) => {
+  var token = null
+  if (req && req.cookies) {
+    token = req.cookies['token']
   }
   return token
 }
 
 const options = {
-  jwtFromRequest: extractJwtTokenFromHeader,
+  // Extracts jwt token both from cookies and Authorization header
+  jwtFromRequest: jwt.ExtractJwt.fromExtractors([
+    extractJwtTokenFromCookie,
+    jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+  ]),
   secretOrKey: config.PASSPORT_SECRET,
 }
 

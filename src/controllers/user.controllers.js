@@ -1,37 +1,15 @@
 import { User } from '../models/userModel.js'
+import {
+  validateUserEntity,
+  extractUserBasicData,
+} from '../helpers/user.helpers.js'
 
-/**
- * Extracts basic user data from User model
- * @param {User} user User object
- * @returns Simplified User object
- */
-export const extractUserBasicData = (user) => {
-  const { first_name, last_name, email, age, role } = user
-  return { first_name, last_name, email, age, role }
-}
-
-/**
- * Validates that the required fields are present in the given user object
- * @param {User<UserVerificationRequirement>} user
- */
-export const validateUserEntity = (user) => {
-  return (
-    user?.first_name &&
-    user?.last_name &&
-    user?.email &&
-    user?.age &&
-    user?.role
-  )
-}
-
-validateUserEntity()
-
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find()
     return res.status(200).json(users)
   } catch (error) {
-    res.status(500).json({ error: 'Error de servidor' })
+    next(error)
   }
 }
 
@@ -41,7 +19,7 @@ export const getAllUsers = async (req, res) => {
  * @param {*} res
  * @returns {Promise}
  */
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
   try {
     const userId = req.params.id
     const user = await User.findById(userId)
@@ -50,7 +28,7 @@ export const getUserById = async (req, res) => {
     }
     return res.status(200).json(extractUserBasicData(user))
   } catch (error) {
-    res.status(500).json({ error: 'Error de servidor' })
+    next(error)
   }
 }
 
@@ -60,7 +38,7 @@ export const getUserById = async (req, res) => {
  * @param {*} res
  * @returns
  */
-export const getUserByEmail = async (req, res) => {
+export const getUserByEmail = async (req, res, next) => {
   try {
     const email = req.params.email
     const user = await User.findOne({ email })
@@ -69,7 +47,7 @@ export const getUserByEmail = async (req, res) => {
     }
     return res.status(200).json(extractUserBasicData(user))
   } catch (error) {
-    res.status(500).json({ error: 'Error de servidor' })
+    next(error)
   }
 }
 
@@ -78,7 +56,7 @@ export const getUserByEmail = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-export const editUser = async (req, res) => {
+export const editUser = async (req, res, next) => {
   try {
     const { body } = req
     const id = req.params.id
@@ -93,7 +71,7 @@ export const editUser = async (req, res) => {
     }
     return res.status(200).json(updatedUser)
   } catch (error) {
-    res.status(500).json({ error: 'Error de servidor' })
+    next(error)
   }
 }
 
@@ -102,7 +80,7 @@ export const editUser = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-export const patchUser = async (req, res) => {
+export const patchUser = async (req, res, next) => {
   try {
     const { body } = req
     const id = req.params.id
@@ -112,16 +90,16 @@ export const patchUser = async (req, res) => {
     }
     return res.status(200).json(updatedUser)
   } catch (error) {
-    res.status(500).json({ error: 'Error de servidor' })
+    next(error)
   }
 }
 
-export const deleteUserById = async (req, res) => {
+export const deleteUserById = async (req, res, next) => {
   try {
     const id = req.params.id
     await User.findByIdAndDelete(id)
     return res.status(204).send()
   } catch (error) {
-    res.status(500).json({ error: 'Error de servidor' })
+    next(error)
   }
 }

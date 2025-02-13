@@ -1,13 +1,14 @@
 import express from 'express'
-import cookieParser from 'cookie-parser'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import config from './config/variables.js'
-import { applyPassportStrategy } from './config/passport.config.js'
-import passport from 'passport'
 
+// Middlewares
+import cookieParser from 'cookie-parser'
+import passport from 'passport'
+import { applyPassportStrategy } from './config/passport.config.js'
 import errorHandler from './middlewares/errorHandler.js'
-// Rutas
+// Routes
 import authRouter from './routes/auth.js'
 import usersRouter from './routes/user.js'
 import sessionRouter from './routes/session.js'
@@ -29,17 +30,23 @@ app.use(cookieParser(config.COOKIE_SECRET))
 app.use(express.json())
 app.use(passport.initialize())
 applyPassportStrategy()
-// app.use(passport.session())
 
-// Rutas
+// Routes
 app.use('/api/auth', authRouter)
 app.use(
   '/api/users',
   passport.authenticate('jwt', { session: false }),
   usersRouter
 )
-app.use('/api/session', sessionRouter)
-app.use('/api/products', errorHandler, productsRouter)
+app.use(
+  '/api/session',
+  passport.authenticate('jwt', { session: false }),
+  sessionRouter
+)
+app.use('/api/products', productsRouter)
+
+// Error handler middleware
+app.use(errorHandler)
 
 app.listen(config.PORT, () => {
   console.log(`Server running on port ${config.PORT}`)
