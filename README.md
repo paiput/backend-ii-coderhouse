@@ -4,7 +4,7 @@
 
 ### Desarrollo
 
-[![Tecnologías desarrollo](https://skillicons.dev/icons?i=js,nodejs,express,mongodb,prisma&perline=5)](https://skillicons.dev)
+[![Tecnologías desarrollo](https://skillicons.dev/icons?i=js,nodejs,express,mongodb&perline=5)](https://skillicons.dev)
 
 ### Testing
 
