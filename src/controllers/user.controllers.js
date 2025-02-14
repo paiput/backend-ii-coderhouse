@@ -135,3 +135,13 @@ export const deleteUserById = async (req, res, next) => {
     next(error)
   }
 }
+
+export const deleteUserByEmail = async (req, res, next) => {
+  try {
+    const email = req.params.email
+    await User.findOneAndDelete({ email })
+    return res.status(204).send()
+  } catch (error) {
+    next(error)
+  }
+}

@@ -23,6 +23,16 @@ userRouter.patch('/:id', userController.patchUser)
 
 userRouter.patch('/:id/password', userController.updatePassword)
 
-userRouter.delete('/:id', userController.deleteUserById)
+userRouter.delete(
+  '/:id',
+  adminAuthorizationMiddleware,
+  userController.deleteUserById
+)
+
+userRouter.delete(
+  '/:email',
+  adminAuthorizationMiddleware,
+  userController.deleteUserByEmail
+)
 
 export default userRouter
