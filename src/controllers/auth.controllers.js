@@ -43,8 +43,11 @@ export const login = async (req, res, next) => {
   try {
     const { body } = req
     const user = await User.findOne({ email: body.email })
+    if (!user) {
+      return res.status(401).json({ error: 'Email o contraseña inválidos' })
+    }
     const isPasswordValid = bcrypt.compareSync(body.password, user.password)
-    if (!user || !isPasswordValid) {
+    if (!isPasswordValid) {
       return res.status(401).json({ error: 'Email o contraseña inválidos' })
     }
     const token = generateToken(JSON.stringify(user))
