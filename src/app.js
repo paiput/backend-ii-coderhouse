@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import passport from 'passport'
 import { applyPassportStrategy } from './config/passport.config.js'
 import errorHandler from './middlewares/errorHandler.js'
+import validateUserAuth from './middlewares/validateUserAuth.js'
 // Routes
 import authRouter from './routes/auth.js'
 import usersRouter from './routes/user.js'
@@ -33,16 +34,8 @@ applyPassportStrategy()
 
 // Routes
 app.use('/api/auth', authRouter)
-app.use(
-  '/api/users',
-  passport.authenticate('jwt', { session: false }),
-  usersRouter
-)
-app.use(
-  '/api/session',
-  passport.authenticate('jwt', { session: false }),
-  sessionRouter
-)
+app.use('/api/users', validateUserAuth, usersRouter)
+app.use('/api/session', validateUserAuth, sessionRouter)
 app.use('/api/products', productsRouter)
 
 // Error handler middleware

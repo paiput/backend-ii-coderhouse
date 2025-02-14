@@ -25,7 +25,6 @@ const applyPassportStrategy = () => {
   passport.use(
     new JwtStrategy(options, (jwt_payload, done) => {
       try {
-        console.log({ jwt_payload })
         return done(null, jwt_payload)
       } catch (error) {
         console.log('Error on passport Strategy', error)
