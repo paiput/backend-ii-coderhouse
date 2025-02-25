@@ -1,11 +1,5 @@
 import * as productService from '../services/products.services.js'
 
-/**
- * Get all products
- * @param {*} req
- * @param {*} res
- * @returns Product object array
- */
 export const getAllProducts = async (req, res, next) => {
   try {
     const products = await productService.getAllProducts()
@@ -20,12 +14,6 @@ export const getAllProducts = async (req, res, next) => {
   }
 }
 
-/**
- * Retreive a product by its Id
- * @param {*} req
- * @param {*} res
- * @returns Product object
- */
 export const getProductById = async (req, res, next) => {
   try {
     const id = req.params.id
@@ -34,6 +22,42 @@ export const getProductById = async (req, res, next) => {
       return res.status(404).json({ error: 'El producto buscado no existe' })
     }
     return res.status(200).json(product)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const createProduct = async (req, res, next) => {
+  try {
+    const { body } = req
+    const newProduct = await productService.createProduct(body)
+    return res.status(201).json(newProduct)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateProduct = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    const { body } = req
+    const updatedProduct = await productService.updateProductById(id, body)
+    if (!updatedProduct) {
+      return res
+        .status(404)
+        .json({ error: 'El producto que intenta actualizar no existe ' })
+    }
+    return res.status(200).json(updatedProduct)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteProductById = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    await productService.deleteProductById(id)
+    return res.status(204).send()
   } catch (error) {
     next(error)
   }
