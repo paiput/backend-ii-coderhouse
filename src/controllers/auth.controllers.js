@@ -1,4 +1,4 @@
-import { User } from '../models/userModel.js'
+import * as userService from '../services/user.services.js'
 import bcrypt from 'bcrypt'
 import config from '../config/variables.js'
 import { extractUserBasicData } from '../helpers/user.helpers.js'
@@ -13,7 +13,7 @@ import { generateToken } from '../helpers/auth.helpers.js'
 export const register = async (req, res, next) => {
   try {
     const { body } = req
-    const user = await User.findOne({ email: body.email })
+    const user = await userService.getUserByEmail(email)
     if (user) {
       return res.status(400).json({ error: 'El usuario ya existe' })
     }
@@ -22,7 +22,7 @@ export const register = async (req, res, next) => {
       config.BCRYPT_SALT_ROUNDS
     )
     const userToCreate = { ...body, password: hashedPassword }
-    const newUser = await User.create(userToCreate)
+    const newUser = await userService.createUser(userToCreate)
     delete newUser.password
     if (!newUser) {
       return res.status(400).json({ error: 'No se pudo crear el usuario' })
@@ -42,7 +42,7 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const { body } = req
-    const user = await User.findOne({ email: body.email })
+    const user = await userService.getUserByEmail(body.email)
     if (!user) {
       return res.status(401).json({ error: 'Email o contraseña inválidos' })
     }

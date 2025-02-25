@@ -1,4 +1,4 @@
-import { Product } from '../models/productModel.js'
+import * as productService from '../services/products.services.js'
 
 /**
  * Get all products
@@ -8,7 +8,7 @@ import { Product } from '../models/productModel.js'
  */
 export const getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.find()
+    const products = await productService.getAllProducts()
     if (!products) {
       return res
         .status(400)
@@ -29,7 +29,7 @@ export const getAllProducts = async (req, res, next) => {
 export const getProductById = async (req, res, next) => {
   try {
     const id = req.params.id
-    const product = await Product.findOne({ id })
+    const product = await productService.getProductById(id)
     if (!product) {
       return res.status(404).json({ error: 'El producto buscado no existe' })
     }

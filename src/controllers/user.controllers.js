@@ -1,4 +1,4 @@
-import { User } from '../models/userModel.js'
+import * as userService from '../services/user.services.js'
 import bcrypt from 'bcrypt'
 import config from '../config/variables.js'
 import {
@@ -8,7 +8,7 @@ import {
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find()
+    const users = await userService.getAllUsers()
     return res.status(200).json(users)
   } catch (error) {
     next(error)
@@ -24,7 +24,7 @@ export const getAllUsers = async (req, res, next) => {
 export const getUserById = async (req, res, next) => {
   try {
     const userId = req.params.id
-    const user = await User.findById(userId)
+    const user = await userService.getUserById(userId)
     if (!user) {
       return res.status(404).json({ error: 'El usuario no existe' })
     }
@@ -43,7 +43,7 @@ export const getUserById = async (req, res, next) => {
 export const getUserByEmail = async (req, res, next) => {
   try {
     const email = req.params.email
-    const user = await User.findOne({ email })
+    const user = await userService.getUserByEmail(email)
     if (!user) {
       return res.status(404).json({ error: 'El usuario no existe' })
     }
@@ -67,7 +67,7 @@ export const editUser = async (req, res, next) => {
         .status(400)
         .json({ error: 'Se debe enviar toda la información del usuario' })
     }
-    const updatedUser = await User.findByIdAndUpdate(id, body)
+    const updatedUser = await userService.updateUserById(id, body)
     if (!updatedUser) {
       return res.status(404).json({ error: 'El usuario no existe' })
     }
@@ -86,7 +86,7 @@ export const patchUser = async (req, res, next) => {
   try {
     const { body } = req
     const id = req.params.id
-    const updatedUser = await User.findByIdAndUpdate(id, body)
+    const updatedUser = await userService.updateUserById(id, body)
     if (!updatedUser) {
       return res.status(404).json({ error: 'El usuario no existe' })
     }
@@ -100,7 +100,7 @@ export const updatePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body
     const id = req.params.id
-    const user = await User.findById(id)
+    const user = await userService.getUserById(id)
     if (!user) {
       return res.status(400).json({ error: 'El usuario no existe' })
     }
@@ -117,7 +117,7 @@ export const updatePassword = async (req, res, next) => {
       newPassword,
       config.BCRYPT_SALT_ROUNDS
     )
-    const updatedUser = await User.findByIdAndUpdate(id, {
+    const updatedUser = await userService.updateUserById(id, {
       password: newHashedPassword,
     })
     return res.status(200).json(updatedUser)
@@ -129,7 +129,7 @@ export const updatePassword = async (req, res, next) => {
 export const deleteUserById = async (req, res, next) => {
   try {
     const id = req.params.id
-    await User.findByIdAndDelete(id)
+    await userService.deleteUserById(id)
     return res.status(204).send()
   } catch (error) {
     next(error)
@@ -139,7 +139,7 @@ export const deleteUserById = async (req, res, next) => {
 export const deleteUserByEmail = async (req, res, next) => {
   try {
     const email = req.params.email
-    await User.findOneAndDelete({ email })
+    await userService.deleteUserByEmail(email)
     return res.status(204).send()
   } catch (error) {
     next(error)
