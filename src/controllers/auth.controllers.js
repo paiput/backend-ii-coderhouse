@@ -4,12 +4,6 @@ import config from '../config/variables.js'
 import { extractUserBasicData } from '../helpers/user.helpers.js'
 import { generateToken } from '../helpers/auth.helpers.js'
 
-/**
- * Creates new user in the db and returns it
- * @param {Request} req
- * @param {Response} res
- * @returns User object
- */
 export const register = async (req, res, next) => {
   try {
     const { body } = req
@@ -33,12 +27,6 @@ export const register = async (req, res, next) => {
   }
 }
 
-/**
- * Logs in the user
- * @param {Request} req
- * @param {Response} res
- * @returns User object with its token
- */
 export const login = async (req, res, next) => {
   try {
     const { body } = req

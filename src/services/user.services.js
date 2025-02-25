@@ -21,7 +21,7 @@ export const createUser = async (userInfo) => {
 }
 
 export const updateUserById = async (id, userInfo) => {
-  const updatedUser = await User.findByIdAndUpdate(id, userInfo)
+  const updatedUser = await User.findByIdAndUpdate(id, userInfo, { new: true })
   return updatedUser
 }
 

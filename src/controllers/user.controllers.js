@@ -15,12 +15,6 @@ export const getAllUsers = async (req, res, next) => {
   }
 }
 
-/** Get user by Id
- *
- * @param {*} req
- * @param {*} res
- * @returns {Promise}
- */
 export const getUserById = async (req, res, next) => {
   try {
     const userId = req.params.id
@@ -34,12 +28,6 @@ export const getUserById = async (req, res, next) => {
   }
 }
 
-/**
- *
- * @param {*} req
- * @param {*} res
- * @returns
- */
 export const getUserByEmail = async (req, res, next) => {
   try {
     const email = req.params.email
@@ -53,11 +41,6 @@ export const getUserByEmail = async (req, res, next) => {
   }
 }
 
-/** Edit User (PUT method)
- * Overrides the user's data with the user object provided in the request body
- * @param {*} req
- * @param {*} res
- */
 export const editUser = async (req, res, next) => {
   try {
     const { body } = req
@@ -77,11 +60,6 @@ export const editUser = async (req, res, next) => {
   }
 }
 
-/** Patch User (PATCH method)
- * Updates only the given user's attributes on the request body
- * @param {*} req
- * @param {*} res
- */
 export const patchUser = async (req, res, next) => {
   try {
     const { body } = req
