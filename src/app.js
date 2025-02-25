@@ -10,10 +10,10 @@ import { applyPassportStrategy } from './config/passport.config.js'
 import errorHandler from './middlewares/errorHandler.js'
 import validateUserAuth from './middlewares/validateUserAuth.js'
 // Routes
-import authRouter from './routes/auth.js'
-import usersRouter from './routes/user.js'
-import sessionRouter from './routes/session.js'
-import productsRouter from './routes/product.js'
+import authRouter from './routes/auth.routes.js'
+import usersRouter from './routes/user.routes.js'
+import sessionRouter from './routes/session.routes.js'
+import productsRouter from './routes/product.routes.js'
 
 const app = express()
 
