@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import * as userController from '../controllers/user.controllers.js'
-import adminAuthorizationMiddleware from '../middlewares/adminAuthorization.js'
+import validateAdminAuthorization from '../middlewares/validateAdminAuthorization.js'
 
 const userRouter = Router()
 
-userRouter.get('/', adminAuthorizationMiddleware, userController.getAllUsers)
+userRouter.get('/', validateAdminAuthorization, userController.getAllUsers)
 
 userRouter.get('/:id', userController.getUserById)
 
@@ -25,13 +25,13 @@ userRouter.patch('/:id/password', userController.updatePassword)
 
 userRouter.delete(
   '/:id',
-  adminAuthorizationMiddleware,
+  validateAdminAuthorization,
   userController.deleteUserById
 )
 
 userRouter.delete(
   '/:email',
-  adminAuthorizationMiddleware,
+  validateAdminAuthorization,
   userController.deleteUserByEmail
 )
 
