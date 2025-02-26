@@ -2,6 +2,7 @@ import express from 'express'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import config from './config/variables.js'
+import cors from 'cors'
 
 // Middlewares
 import cookieParser from 'cookie-parser'
@@ -27,6 +28,7 @@ const db = mongoose
   })
 
 // Middlewares
+app.use(cors())
 app.use(cookieParser(config.COOKIE_SECRET))
 app.use(express.json())
 app.use(passport.initialize())
