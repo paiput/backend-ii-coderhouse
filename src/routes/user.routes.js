@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import * as userController from '../controllers/user.controllers.js'
 import validateAdminAuthorization from '../middlewares/validateAdminAuthorization.js'
+import validateEmail from '../middlewares/validateEmail.js'
 
 const userRouter = Router()
 
@@ -8,12 +9,7 @@ userRouter.get('/', validateAdminAuthorization, userController.getAllUsers)
 
 userRouter.get('/:id', userController.getUserById)
 
-userRouter.param('email', (req, res, next, email) => {
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
-  const isValid = email.match(emailRegex)
-  if (!isValid) return res.status(400).json({ error: 'Email inválido' })
-  return next()
-})
+userRouter.param('email', validateEmail)
 
 userRouter.get('/email/:email', userController.getUserByEmail)
 
