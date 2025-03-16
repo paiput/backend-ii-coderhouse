@@ -1,27 +1,25 @@
-import { Product } from '../models/productModel.js'
+import { productRepository } from '../repositories/product.repository.js'
 
 export const getAllProducts = async () => {
-  const products = await Product.find()
+  const products = await productRepository.getAllProducts()
   return products
 }
 
 export const getProductById = async (id) => {
-  const product = await Product.findById(id)
+  const product = await productRepository.getProductById(id)
   return product
 }
 
 export const createProduct = async (productInfo) => {
-  const newProduct = await Product.create(productInfo)
+  const newProduct = await productRepository.createProduct(productInfo)
   return newProduct
 }
 
 export const updateProductById = async (id, productInfo) => {
-  const updatedProduct = await Product.findByIdAndUpdate(id, productInfo, {
-    new: true,
-  })
+  const updatedProduct = await productRepository.updateProduct(id, productInfo)
   return updatedProduct
 }
 
 export const deleteProductById = async (id) => {
-  await Product.findByIdAndDelete(id)
+  await productRepository.deleteProduct(id)
 }

@@ -1,9 +1,8 @@
 import express from 'express'
 import 'dotenv/config'
-import mongoose from 'mongoose'
 import config from './config/variables.js'
 import cors from 'cors'
-
+import connectToDB from './db/connection.js'
 // Middlewares
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
@@ -18,14 +17,8 @@ import productsRouter from './routes/product.routes.js'
 
 const app = express()
 
-const db = mongoose
-  .connect(config.DATABSE_URL)
-  .then(() => {
-    console.log('Conected to db at', config.DATABSE_URL)
-  })
-  .catch((err) => {
-    console.log('Error trying to connect to db', err)
-  })
+// DB connection
+connectToDB(config.DB_TYPE)
 
 // Middlewares
 app.use(cors())

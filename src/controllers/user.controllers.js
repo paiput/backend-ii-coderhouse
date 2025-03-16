@@ -1,10 +1,8 @@
 import * as userService from '../services/user.services.js'
 import bcrypt from 'bcrypt'
 import config from '../config/variables.js'
-import {
-  validateUserEntity,
-  extractUserBasicData,
-} from '../helpers/user.helpers.js'
+import { validateUserEntity } from '../helpers/user.helpers.js'
+import UserDTO from '../dto/user.dto.js'
 
 export const getAllUsers = async (req, res, next) => {
   try {
@@ -22,7 +20,7 @@ export const getUserById = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ error: 'El usuario no existe' })
     }
-    return res.status(200).json(extractUserBasicData(user))
+    return res.status(200).json(new UserDTO(user))
   } catch (error) {
     next(error)
   }
@@ -35,7 +33,7 @@ export const getUserByEmail = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ error: 'El usuario no existe' })
     }
-    return res.status(200).json(extractUserBasicData(user))
+    return res.status(200).json(new UserDTO(user))
   } catch (error) {
     next(error)
   }

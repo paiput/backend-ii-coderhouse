@@ -12,7 +12,7 @@ const testUser = {
 }
 
 const connectToDb = async () => {
-  await mongoose.connect(config.DATABSE_URL)
+  await mongoose.connect(config.MONGO_URI)
 }
 
 const disconnectDb = async () => {

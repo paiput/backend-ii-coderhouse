@@ -1,8 +1,8 @@
 import * as userService from '../services/user.services.js'
 import bcrypt from 'bcrypt'
 import config from '../config/variables.js'
-import { extractUserBasicData } from '../helpers/user.helpers.js'
 import { generateToken } from '../helpers/auth.helpers.js'
+import UserDTO from '../dto/user.dto.js'
 
 export const register = async (req, res, next) => {
   try {
@@ -43,7 +43,7 @@ export const login = async (req, res, next) => {
       maxAge: 1000 * 60 * 10,
       httpOnly: true,
     })
-    return res.status(200).json({ user: extractUserBasicData(user), token })
+    return res.status(200).json({ user: new UserDTO(user), token })
   } catch (error) {
     next(error)
   }
