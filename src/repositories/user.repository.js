@@ -1,5 +1,4 @@
 import { userDAO } from '../dao/index.js'
-import UserDTO from '../dto/user.dto.js'
 
 class UserRepository {
   async getAllUsers() {
