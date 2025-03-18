@@ -4,7 +4,9 @@ const validateUserAuth = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (err) return next(err)
     if (!user) {
-      return res.status(401).json({ error: 'Token inválido o expirado' })
+      return res
+        .status(401)
+        .json({ error: 'Token de sesión inválido o expirado' })
     }
     next()
   })(req, res, next)

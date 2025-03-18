@@ -66,6 +66,35 @@ export const updatePassword = async (req, res, next) => {
   }
 }
 
+export const sendPasswordRestoreEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body
+    await userService.sendPasswordRestoreEmail(email)
+    return res
+      .status(200)
+      .json({ message: 'Se ha enviado un mail para restablecer la contraseña' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const restorePassword = async (req, res, next) => {
+  try {
+    const { id, token } = req.params
+    const { password } = req.body
+    const updatedUser = await userService.restorePassword(
+      { userId: id, token },
+      password
+    )
+    return res.status(200).json({
+      message: 'Se ha modificado la contraseña correctamente',
+      updatedUser,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const deleteUserById = async (req, res, next) => {
   try {
     const id = req.params.id

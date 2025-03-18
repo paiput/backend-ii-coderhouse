@@ -29,7 +29,7 @@ applyPassportStrategy()
 
 // Routes
 app.use('/api/auth', authRouter)
-app.use('/api/users', validateUserAuth, usersRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/session', validateUserAuth, sessionRouter)
 app.use('/api/products', productsRouter)
 
