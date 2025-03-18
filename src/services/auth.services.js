@@ -11,7 +11,7 @@ export const registerUser = async (userData) => {
     userData.password,
     config.BCRYPT_SALT_ROUNDS
   )
-  const userToCreate = { ...body, password: hashedPassword }
+  const userToCreate = { ...userData, password: hashedPassword }
   const newUser = await userService.createUser(userToCreate)
   if (!newUser) {
     throw new ValidationError('No se pudo crear el usuario')
