@@ -9,3 +9,8 @@ export const generateToken = (user) => {
   const token = jwt.sign(user, config.PASSPORT_SECRET)
   return token
 }
+
+export const verifyToken = (token) => {
+  const verifiedToken = jwt.verify(token, config.PASSPORT_SECRET)
+  return verifiedToken
+}

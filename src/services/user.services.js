@@ -13,16 +13,16 @@ export const getAllUsers = async () => {
   return users
 }
 
-export const getUserById = async (id, includePassword) => {
+export const getUserById = async (id, config = {}) => {
   const user = await userRepository.getUserById(id)
   if (!user) throw new NotFoundError(`Usuario ${id} no encontrado`)
-  return new UserDTO(user, includePassword)
+  return new UserDTO(user, config)
 }
 
-export const getUserByEmail = async (email, includePassword) => {
+export const getUserByEmail = async (email, config = {}) => {
   const user = await userRepository.getUserByEmail(email)
   if (!user) throw new NotFoundError(`Usuario ${email} no encontrado`)
-  return new UserDTO(user, includePassword)
+  return new UserDTO(user, config)
 }
 
 export const createUser = async (userInfo) => {
@@ -66,7 +66,6 @@ export const updatePassword = async (id, currentPassword, newPassword) => {
 
 export const sendPasswordRestoreEmail = async (email) => {
   const user = await userRepository.getUserByEmail(email)
-  console.log('el user:', user)
   if (!user) {
     throw new NotFoundError('No se ha encontrado el usuario')
   }

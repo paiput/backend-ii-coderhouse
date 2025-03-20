@@ -20,7 +20,10 @@ export const registerUser = async (userData) => {
 }
 
 export const loginUser = async (userData) => {
-  const user = await userService.getUserByEmail(userData.email, true)
+  const user = await userService.getUserByEmail(userData.email, {
+    includePassword: true,
+    includeId: true,
+  })
   if (!user) {
     throw new AuthenticationError('Email o contraseña inválidos')
   }
@@ -29,5 +32,5 @@ export const loginUser = async (userData) => {
     throw new AuthenticationError('Email o contraseña inválidos')
   }
   const token = generateToken(JSON.stringify(user))
-  return { user: new UserDTO(user), token }
+  return { user: new UserDTO(user, { includeId: true }), token }
 }

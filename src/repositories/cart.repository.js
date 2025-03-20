@@ -9,6 +9,10 @@ class CartRepository {
     return await cartDAO.getById(id)
   }
 
+  async getCartByUserId(userId) {
+    return await cartDAO.getByUserId(userId)
+  }
+
   async createCart(data) {
     return await cartDAO.create(data)
   }

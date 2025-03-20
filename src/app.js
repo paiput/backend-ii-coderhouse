@@ -14,6 +14,7 @@ import authRouter from './routes/auth.routes.js'
 import usersRouter from './routes/user.routes.js'
 import sessionRouter from './routes/session.routes.js'
 import productsRouter from './routes/product.routes.js'
+import cartRouter from './routes/cart.routes.js'
 
 const app = express()
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/session', validateUserAuth, sessionRouter)
 app.use('/api/products', productsRouter)
+app.use('/api/cart', validateUserAuth, cartRouter)
 
 // Error handler middleware
 app.use(errorHandler)
