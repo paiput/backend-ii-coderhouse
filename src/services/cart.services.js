@@ -4,8 +4,24 @@ import ValidationError from '../errors/validationError.js'
 import { verifyToken } from '../utils/auth.utils.js'
 import AuthenticationError from '../errors/authenticationError.js'
 import AuthorizationError from '../errors/authorizationError.js'
+import NotFoundError from '../errors/notFoundError.js'
+import ConflictError from '../errors/conflictError.js'
 
-export const createCart = async (cartData) => {}
+export const getCart = async (cartId) => {
+  const cart = await cartRepository.getCartById(cartId)
+  if (!cart) {
+    throw new NotFoundError('No se encontró el carrito buscado')
+  }
+  return cart
+}
+
+export const createCart = async (cartData) => {
+  const existingCart = await cartRepository.getCartByUserId(cartData.userId)
+  if (existingCart)
+    throw new ConflictError('Ya existe un carrito para el usuario')
+  const createdCart = await cartRepository.createCart(cartData)
+  return createdCart
+}
 
 export const addItemToCart = async (cartId, itemId, token) => {
   const cart = await cartRepository.getCartById(cartId)
