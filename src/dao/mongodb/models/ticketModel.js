@@ -1,13 +1,14 @@
 import mongoose, { Schema } from 'mongoose'
 import { productSchema } from './productModel.js'
+import { v4 as uuidv4 } from 'uuid'
 
 const ticketSchema = new Schema({
   purchaser: String,
   products: [productSchema],
   code: {
     type: String,
-    required: true,
     unique: true,
+    default: uuidv4,
   },
   amount: {
     type: Number,
