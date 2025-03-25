@@ -19,8 +19,7 @@ export const createProduct = async (productInfo) => {
 
 export const updateProductById = async (id, productInfo) => {
   const updatedProduct = await productRepository.updateProduct(id, productInfo)
-  if (!updatedProduct)
-    throw new NotFoundError(`No se encontró el producto ${id} para actualizar`)
+  if (!updatedProduct) throw new NotFoundError(`El producto ${id} no existe`)
   return updatedProduct
 }
 

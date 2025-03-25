@@ -8,8 +8,16 @@ const cartSchema = new Schema({
   },
   products: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
+      _id: false,
+      quantity: {
+        type: Number,
+        default: 1,
+        min: 1,
+      },
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+      },
     },
   ],
 })

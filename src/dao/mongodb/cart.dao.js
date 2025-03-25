@@ -6,6 +6,10 @@ export default class CartDAO extends MongoDAO {
     super(Cart)
   }
 
+  async getById(cartId) {
+    return await this.model.findById(cartId).populate('products.product')
+  }
+
   async getByUserId(userId) {
     return await this.model.findOne({ userId })
   }

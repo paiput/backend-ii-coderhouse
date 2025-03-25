@@ -1,4 +1,4 @@
-import { getSession } from '../services/session.service.js'
+import { getSession } from '../services/session.services.js'
 import UserDTO from '../dto/user.dto.js'
 
 export const getCurrentSession = async (req, res, next) => {
