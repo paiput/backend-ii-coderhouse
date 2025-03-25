@@ -54,7 +54,12 @@ export const changeProducts = async (req, res, next) => {
 export const removeItem = async (req, res, next) => {
   try {
     const { cid, itemId } = req.params
-    const updatedCart = await cartService.removeItemFromCart(cid, itemId)
+    const userToken = getUserToken(req)
+    const updatedCart = await cartService.removeItemFromCart(
+      cid,
+      itemId,
+      userToken
+    )
     return res.status(200).json(updatedCart)
   } catch (error) {
     next(error)

@@ -55,13 +55,19 @@ export const addItemToCart = async (cartId, cartData, userToken) => {
   return updatedCart
 }
 
-export const removeItemFromCart = async (cartId, itemId) => {
+export const removeItemFromCart = async (cartId, itemId, userToken) => {
   const cart = await cartRepository.getCartById(cartId)
   if (!cart) {
     throw new ValidationError('El carrito no está creado')
   }
-  const filteredProducts = cart.products.filter((product) => {
-    return product._id.toString() !== itemId
+  const user = verifyToken(userToken)
+  if (cart.userId.toString() !== user._id) {
+    throw new AuthorizationError(
+      'No tienes permisos para borrar un item de este carrito'
+    )
+  }
+  const filteredProducts = cart.products.filter((cartProduct) => {
+    return cartProduct.product._id.toString() !== itemId
   })
   const updatedCart = await cartRepository.updateCart(cart._id, {
     products: filteredProducts,

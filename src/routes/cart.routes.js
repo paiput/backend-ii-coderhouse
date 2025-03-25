@@ -11,8 +11,6 @@ cartRouter.post('/:cid/add-item', cartController.addItem)
 
 cartRouter.post('/:cid/purchase', cartController.closePurchase)
 
-cartRouter.put('/:cid/products')
-
 cartRouter.delete('/:cid/items/:itemId', cartController.removeItem)
 
 export default cartRouter
